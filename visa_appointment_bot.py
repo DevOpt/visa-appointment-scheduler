@@ -1,5 +1,7 @@
 import os
 import sendgrid
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from sendgrid.helpers.mail import Mail, Email, To, Content
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -13,16 +15,25 @@ class VisaAppointmentBot:
     def __init__(self):
         # Configure Chrome options
         chrome_options = Options()
-        # Remove headless if you want to see the browser in action
-        # chrome_options.add_argument("--headless")
+        
+        # Add headless mode for non-MacBook environments
+        import platform
+        if platform.system() != "Darwin":  # Darwin is macOS
+            chrome_options.add_argument("--headless")
+            print("Running in headless mode (non-macOS system)")
+        
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")  # Recommended for headless
+        chrome_options.add_argument("--window-size=1920,1080")  # Set window size for headless
 
         # Get credentials securely
         self.username = os.getenv("VISA_USER_USERNAME")
         self.password = os.getenv("VISA_USER_PASSWORD")
         
-        self.driver = webdriver.Chrome(options=chrome_options)
+        # Use ChromeDriverManager for automatic driver management
+        service = Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service, options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)
         
     def login(self, username, password):
