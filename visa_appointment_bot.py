@@ -20,10 +20,8 @@ class VisaAppointmentBot:
         # Add headless mode for non-MacBook environments
         if platform.system() != "Darwin":  # Darwin is macOS
             chrome_options.add_argument("--headless")
-            chrome_options.add_argument("--disable-gpu")  # Recommended for headless
-            chrome_options.add_argument("--window-size=1920,1080")  # Set window size for headless
             print("Running in headless mode (non-macOS system)")
-        
+        chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
 
