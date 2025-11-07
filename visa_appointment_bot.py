@@ -1,4 +1,5 @@
 import os
+import platform
 import sendgrid
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
@@ -17,15 +18,14 @@ class VisaAppointmentBot:
         chrome_options = Options()
         
         # Add headless mode for non-MacBook environments
-        import platform
         if platform.system() != "Darwin":  # Darwin is macOS
             chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--disable-gpu")  # Recommended for headless
+            chrome_options.add_argument("--window-size=1920,1080")  # Set window size for headless
             print("Running in headless mode (non-macOS system)")
         
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--disable-gpu")  # Recommended for headless
-        chrome_options.add_argument("--window-size=1920,1080")  # Set window size for headless
 
         # Get credentials securely
         self.username = os.getenv("VISA_USER_USERNAME")
@@ -225,8 +225,11 @@ class VisaAppointmentBot:
             
         finally:
             # Keep browser open for a while to see results
-            input("Press Enter to close the browser...")
-            self.driver.quit()
+            if platform.system() == "Darwin":  # Only for macOS
+                input("Press Enter to close the browser...")
+                self.driver.quit()
+            else:
+                self.driver.quit()
 
 if __name__ == "__main__":
     bot = VisaAppointmentBot()
