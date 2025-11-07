@@ -219,5 +219,4 @@ class VisaAppointmentBot:
 
 if __name__ == "__main__":
     bot = VisaAppointmentBot()
-    #bot.run()
-    bot.send_notification()
+    bot.run()
