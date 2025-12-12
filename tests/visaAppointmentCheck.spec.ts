@@ -12,12 +12,12 @@ test('Check Appointment Availability', async ({ page }) => {
     await page.fill('input[name="user[password]"]', userPassword || '');
     await page.click('label[for="policy_confirmed"]');
     await page.click('input[name="commit"][value="Sign In"]');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
     
     // Navigate to the appointment scheduling page
     const continueLink = page.locator('a:has-text("Continue")');
     await continueLink.click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
     const accordionTitle = page.locator('a.accordion-title:has(h5:text-matches(".*Pay Visa Fee.*"))');
     await accordionTitle.waitFor({ state: 'visible' });
     const accordionItem = accordionTitle.locator('xpath=./ancestor::li[contains(@class, "accordion-item")]');
