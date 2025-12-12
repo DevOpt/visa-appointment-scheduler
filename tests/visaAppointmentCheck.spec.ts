@@ -41,7 +41,7 @@ test('Check Appointment Availability', async ({ page }) => {
     const montrealNoAppointments = page.locator("tr:has(td:text('Montreal')):has(td:text-matches('.*No Appointments Available.*'))");
     const generalMessageVisible = await noAppointmentsMsg.isVisible();
     const montrealMessageVisible = await montrealNoAppointments.isVisible();
-    if (generalMessageVisible || montrealMessageVisible) {
+    if (generalMessageVisible && montrealMessageVisible) {
         console.log('No appointment slots are available.');
     } else {
         console.log('Appointment slots are available!');
