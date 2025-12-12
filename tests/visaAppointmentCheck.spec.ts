@@ -6,10 +6,14 @@ test('Check Appointment Availability', async ({ page }) => {
     const userEmail = process.env.USER_EMAIL;
     const userPassword = process.env.USER_PASSWORD;
 
+    if (!userEmail || !userPassword) {
+        throw new Error('USER_EMAIL or USER_PASSWORD environment variable is not set');
+    }
+
     // Sign in to the visa appointment website  
     await page.goto('https://ais.usvisa-info.com/en-ca/iv/users/sign_in');
-    await page.fill('input[name="user[email]"]', userEmail || '');
-    await page.fill('input[name="user[password]"]', userPassword || '');
+    await page.fill('input[name="user[email]"]', userEmail);
+    await page.fill('input[name="user[password]"]', userPassword);
     await page.click('label[for="policy_confirmed"]');
     await page.click('input[name="commit"][value="Sign In"]');
     await page.waitForTimeout(3000);
