@@ -52,16 +52,18 @@ test('Check Appointment Availability', async ({ page }) => {
 // Helper function to send email notifications
 async function sendEmailNotification() {
     const apiKey = process.env.SENDGRID_API_KEY;
-    if (!apiKey) {
-        throw new Error('SENDGRID_API_KEY environment variable is not set');
+    const recipientEmail = process.env.USER_EMAIL;
+    const senderEmail = process.env.SENDER_EMAIL;
+    if (!apiKey || !recipientEmail || !senderEmail) {
+        throw new Error('Environment variables are not set');
     }
     sgMail.setApiKey(apiKey);
 
     const msg = {
-    to: 'wefa.sherif@gmail.com', 
-    from: 'auth@asherif.dev',
-    subject: 'U.S Visa Appointment Has Opened!',
-    html: '<p>We have checked the visa appointment availability and found a slot. Go to <a href="https://ais.usvisa-info.com/en-ca/iv/users/sign_in">U.S Visa Appointment Service</a> to schedule your appointment.</p>',
+        to: recipientEmail, 
+        from: senderEmail,
+        subject: 'U.S Visa Appointment Has Opened!',
+        html: '<p>We have checked the visa appointment availability and found a slot. Go to <a href="https://ais.usvisa-info.com/en-ca/iv/users/sign_in">U.S Visa Appointment Service</a> to schedule your appointment.</p>',
     }
 
     sgMail
