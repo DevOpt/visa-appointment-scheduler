@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 * * * *" # Runs every hour at the beginning of the hour
+    - cron: "0 0,7-23 * * *" # Runs every hour from 7AM to 12AM (midnight) daily
 jobs:
   test:
     timeout-minutes: 60
